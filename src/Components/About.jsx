@@ -14,7 +14,7 @@ function About() {
     <div className="min-h-screen  text-[#E0E0E0]">
         <Background/>
       {/* <div className="w-full bg-gradient-to-r from-[#1a1a1a] to-[#121212] py-12 px-4 border-b border-[#444444]"> */}
-        <div className="max-w-4xl mx-auto mt-10">
+        <div className="max-w-4xl mx-auto mt-10 p-5">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 flex items-center gap-3">
             
             About PassVault

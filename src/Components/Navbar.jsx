@@ -57,12 +57,12 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="hover:text-white font-bold transition-all duration-100">
-            <a href="">
+            <a href="https://www.github.com/abdulsamad2002" target="_blank">
               <RiGithubLine size={24} />
             </a>
           </li>
           <li className="hover:text-white font-bold transition-all duration-100">
-            <a href="">
+            <a href="https://linkedin.com/in/abdulsamad4" target="_blank">
               <FaLinkedinIn size={24} />
             </a>
           </li>
@@ -86,13 +86,13 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li>
-            <a href="" className="hover:text-white flex items-center gap-2">
+            <a href="https://github.com/abdulsamad2002" target="_blank" className="hover:text-white flex items-center gap-2">
               <RiGithubLine size={24} />
               GitHub
             </a>
           </li>
           <li>
-            <a href="" className="hover:text-white flex items-center gap-2">
+            <a href="https://linkedin.com/in/abdulsamad4" target="_blank" className="hover:text-white flex items-center gap-2">
               <FaLinkedinIn size={24} />
               LinkedIn
             </a>
