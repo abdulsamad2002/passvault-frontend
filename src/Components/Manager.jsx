@@ -376,7 +376,7 @@ function Manager() {
           </div>
 
           {records.length === 0 && (
-            <div className="h-43 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
+            <div className="h-40 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
               <h2>Vault Empty</h2>
             </div>
           )}
