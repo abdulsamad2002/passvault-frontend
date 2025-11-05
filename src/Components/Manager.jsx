@@ -244,7 +244,7 @@ function Manager() {
 
     const timeoutId = setTimeout(() => {
       setDocs(sanitized);
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, [records]);
