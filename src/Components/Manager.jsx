@@ -15,7 +15,7 @@ function Manager() {
   const [master, setmaster] = useState();
 
   async function getDocs() {
-    let data = await fetch("http://localhost:3000/");
+    let data = await fetch("https://passvault-backend-zeta.vercel.app/");
     let newData = await data.json();
     setrecords(newData);
   }
@@ -226,7 +226,7 @@ function Manager() {
   }
 
   async function setDocs(sanitized) {
-    let res = await fetch("http://localhost:3000/", {
+    let res = await fetch("https://passvault-backend-zeta.vercel.app/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
