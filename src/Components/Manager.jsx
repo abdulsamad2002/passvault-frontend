@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import { MdNoEncryption } from "react-icons/md";
+import Spinner from "./Spinner"
 
 function Manager() {
   const [visible, setVisible] = useState(false);
@@ -388,9 +389,10 @@ function Manager() {
           </div>
 
           {records.length === 0 && (
-            <div className="h-40 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
-              <h2>Vault Empty</h2>
-            </div>
+            // <div className="h-40 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
+            //   <h2>Vault Empty</h2>
+            // </div>
+            <Spinner message="Fetching data..." size="default" />
           )}
 
           {records.map((dataObj) => (
