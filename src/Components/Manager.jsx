@@ -15,9 +15,17 @@ function Manager() {
   const [master, setmaster] = useState();
 
   async function getDocs() {
-    let data = await fetch("https://passvault-backend-zeta.vercel.app/");
-    let newData = await data.json();
-    setrecords(newData);
+    try {
+      let data = await fetch(import.meta.env.VITE_BACKEND_URL, {
+        headers: {
+          "x-api-key": import.meta.env.VITE_API_KEY,
+        },
+      });
+      let newData = await data.json();
+      setrecords(newData);
+    } catch (error) {
+      console.log("Failed to fetch data. Network error.");
+    }
   }
 
   useEffect(() => {
@@ -115,16 +123,6 @@ function Manager() {
       // - wrong master password (derived key wrong) => authentication fails
       // - ciphertext/iv corrupted or tampered with => authentication fails
       // crypto.subtle.decrypt throws a DOMException on auth failure
-      toast.info("Decryption failed! Wrong key", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
       console.log(err);
       throw new Error(
         "Decryption failed. Possible wrong password or corrupted data."
@@ -197,6 +195,12 @@ function Manager() {
       delete obj.masterpassword;
     });
     setrecords(newArr);
+    setDocs({
+      ...data,
+      ciphertext: toBase64(encrypted),
+      salt: toBase64(salt),
+      iv: toBase64(iv),
+    });
   }
 
   function submitter(data) {
@@ -206,48 +210,56 @@ function Manager() {
     reset();
   }
 
-  function handleDelete(id) {
-    toast.info("Deleted successfully!", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-    let index = records.findIndex((item) => {
-      return item.id === id;
-    });
-    let newTodoList = [...records];
-    newTodoList.splice(index, 1);
-    setrecords(newTodoList);
+  async function handleDelete(id) {
+    try {
+      let res = await fetch(import.meta.env.VITE_BACKEND_URL, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_API_KEY,
+        },
+        body: JSON.stringify({ id: id }),
+      });
+      if (res.ok) {
+        await getDocs();
+      }
+    } catch (error) {
+      console.log("Deletion failed! Network Error");
+    }
   }
 
-  async function setDocs(sanitized) {
-    let res = await fetch("https://passvault-backend-zeta.vercel.app/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(sanitized),
-    });
-  }
-
-  useEffect(() => {
-    const safeRecords = Array.isArray(records) ? records : [];
-    const sanitized = safeRecords.map((obj) => {
-      const { password, masterpassword, ...rest } = obj || {};
+  async function setDocs(recArr) {
+    const sanitized = (() => {
+      const { password, masterpassword, ...rest } = recArr || {};
       return rest;
-    });
+    })();
+    try {
+      let res = await fetch(import.meta.env.VITE_BACKEND_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_API_KEY,
+        },
+        body: JSON.stringify([sanitized]),
+      });
+    } catch (error) {
+      console.log("Failed to save data. Network error.");
+    }
+  }
 
-    const timeoutId = setTimeout(() => {
-      setDocs(sanitized);
-    }, 1000);
+  // useEffect(() => {
+  //   const safeRecords = Array.isArray(records) ? records : [];
+  //   const sanitized = safeRecords.map((obj) => {
+  //     const { password, masterpassword, ...rest } = obj || {};
+  //     return rest;
+  //   });
 
-    return () => clearTimeout(timeoutId);
-  }, [records]);
+  //   const timeoutId = setTimeout(() => {
+  //     setDocs(sanitized);
+  //   }, 1000);
+
+  //   return () => clearTimeout(timeoutId);
+  // }, [records]);
 
   // useEffect(() => {
   //   const safeRecords = Array.isArray(records) ? records : [];
@@ -384,6 +396,7 @@ function Manager() {
           {records.map((dataObj) => (
             <List
               key={dataObj.id}
+              id={dataObj.id}
               ciphertext={dataObj.ciphertext}
               website={dataObj.website}
               username={dataObj.username}
