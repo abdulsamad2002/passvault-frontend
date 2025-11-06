@@ -12,7 +12,7 @@ const Spinner = ({ message = "Loading...", size = "default" }) => {
     <div className="flex flex-col items-center justify-center gap-4 p-8">
       <div className="relative">
         <Loader2 className={`${sizeClasses[size]} text-[#E0E0E0] animate-spin`} />
-        <div className="absolute inset-0 blur-xl bg-[#E0E0E0] opacity-10 animate-pulse"></div>
+        {/* <div className="absolute inset-0 blur-xl bg-[#E0E0E0] opacity-10 animate-pulse"></div> */}
       </div>
       <p className="text-[#E0E0E0] text-sm font-medium animate-pulse">{message}</p>
     </div>
