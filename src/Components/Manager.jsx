@@ -25,6 +25,7 @@ function Manager() {
       });
       let newData = await data.json();
       setrecords(newData);
+      setisLoading(false);
     } catch (error) {
       console.log("Failed to fetch data. Network error.");
     }
@@ -32,7 +33,7 @@ function Manager() {
 
   useEffect(() => {
     getDocs();
-    setisLoading(false);
+    
   }, []);
 
   const {
