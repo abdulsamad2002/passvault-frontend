@@ -32,6 +32,7 @@ function Manager() {
 
   useEffect(() => {
     getDocs();
+    setisLoading(false);
   }, []);
 
   const {
@@ -204,7 +205,7 @@ function Manager() {
       salt: toBase64(salt),
       iv: toBase64(iv),
     });
-    setisLoading(false);
+    
   }
 
   function submitter(data) {
