@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import { MdNoEncryption } from "react-icons/md";
-import Spinner from "./Spinner"
+import Spinner from "./Spinner";
 
 function Manager() {
   const [visible, setVisible] = useState(false);
   const [records, setrecords] = useState([]);
   const [master, setmaster] = useState();
+  const [isLoading, setisLoading] = useState(true);
 
   async function getDocs() {
     try {
@@ -195,6 +196,7 @@ function Manager() {
       delete obj.password;
       delete obj.masterpassword;
     });
+
     setrecords(newArr);
     setDocs({
       ...data,
@@ -202,6 +204,7 @@ function Manager() {
       salt: toBase64(salt),
       iv: toBase64(iv),
     });
+    setisLoading(false);
   }
 
   function submitter(data) {
@@ -388,11 +391,17 @@ function Manager() {
             </div>
           </div>
 
-          {records.length === 0 && (
-            // <div className="h-40 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
-            //   <h2>Vault Empty</h2>
-            // </div>
+          {isLoading ? (
             <Spinner message="Fetching data..." size="default" />
+          ) : (
+            ""
+          )}
+          {isLoading == false && records.length === 0 ? (
+            <div className="h-40 w-full flex items-center justify-center opacity-20 font-bold text-3xl md:text-5xl">
+              <h2>Vault Empty</h2>
+            </div>
+          ) : (
+            ""
           )}
 
           {records.map((dataObj) => (
